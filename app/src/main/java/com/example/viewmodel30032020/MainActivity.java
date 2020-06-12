@@ -4,34 +4,49 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     MainViewModel mainViewModel;
+    Button mBtnGetData;
+    TextView mTvText;
+    EditText mEdt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mBtnGetData = findViewById(R.id.buttonGetData);
+        mTvText = findViewById(R.id.textview);
+        mEdt = findViewById(R.id.edittext);
 
-        mainViewModel = new MainViewModel();
-        getLifecycle().addObserver(mainViewModel);
-        // Observe : Pham vi lang nghe du lieu
-        mainViewModel
-                .getDataRandom()
-                .observe(this, new Observer<Integer>() {
-                    @Override
-                    public void onChanged(Integer integer) {
-                        if (integer != null) {
-                            Log.d("BBB", integer + "");
-                        } else {
-                            Log.d("BBB", "null");
-                        }
-                    }
-                });
-        // setListener : Call data trong main
-        mainViewModel.randomNumber(10);
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        //observer : lay du lieu
+        mainViewModel.getDataString().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null){
+                    mTvText.setText(s);
+                }
+            }
+        });
+        //setListener
+        mBtnGetData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String value = mEdt.getText().toString();
+                mainViewModel.setDataString(value);
+            }
+        });
+
     }
 }
