@@ -7,7 +7,18 @@ import androidx.lifecycle.ViewModel;
 import java.util.Random;
 
 public class MainViewModel extends ViewModel {
-    private MutableLiveData<Integer> mDataRandom = new MutableLiveData<>();
+    private static MainViewModel viewModel = null;
+    private MutableLiveData<Integer> mDataRandom;
+
+    public MainViewModel() {
+        this.mDataRandom = new MutableLiveData<>();
+    }
+    public static MainViewModel getInstance(){
+        if (viewModel == null){
+            viewModel = new MainViewModel();
+        }
+        return viewModel;
+    }
 
     public void randomNumber(int bound){
         Random random = new Random();
