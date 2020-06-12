@@ -11,13 +11,13 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity {
 
     MainViewModel mainViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mainViewModel = new MainViewModel();
+        getLifecycle().addObserver(mainViewModel);
         // Observe : Pham vi lang nghe du lieu
         mainViewModel
                 .getDataRandom()
